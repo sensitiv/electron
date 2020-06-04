@@ -1,0 +1,23 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: John Kleinschmidt <jkleinsc@github.com>
+Date: Wed, 3 Jun 2020 21:31:19 -0400
+Subject: debug no-sandbox weirdness on arm
+
+Debugging why no-sandbox is broken on this branch
+
+diff --git a/base/process/launch_posix.cc b/base/process/launch_posix.cc
+index 9b7573fdc6556c5168415de71577ae1274db38e1..e200246739735031f69ae3ec0b36f22a4e9e3bcf 100644
+--- a/base/process/launch_posix.cc
++++ b/base/process/launch_posix.cc
+@@ -285,6 +285,11 @@ Process LaunchProcess(const CommandLine& cmdline,
+ 
+ Process LaunchProcess(const std::vector<std::string>& argv,
+                       const LaunchOptions& options) {
++  std::string argstring;
++
++  for (const auto &anarg : argv) argstring += anarg;
++
++  LOG(INFO) << "LaunchProcess" << argstring;                        
+   TRACE_EVENT0("base", "LaunchProcess");
+ 
+   InjectiveMultimap fd_shuffle1;
